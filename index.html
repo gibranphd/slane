@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte des Circulations de William MacGuckin de Slane</title>
+    <!-- Leaflet CSS for map visualization -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Fullscreen container with 3D effect for map */
+        #map {
+            height: 600px;
+            width: 100%;
+            border: 3px solid rgba(0, 0, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 255, 0.7);
+            border-radius: 15px;
+            transition: transform 0.8s ease, box-shadow 0.8s ease;
+            background: radial-gradient(circle, rgba(0, 0, 50, 0.7), rgba(0, 0, 50, 0.5));
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Legends for map markers */
+        .legend, .legend-left {
+            position: absolute;
+            background: rgba(0, 0, 50, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 255, 0.5);
+            color: #fff;
+            font-size: 14px;
+            line-height: 1.5;
+            z-index: 999; /* Ensure the legends are above the map */
+        }
+
+        /* Positioning of the legends */
+        .legend {
+            bottom: 30px;
+            right: 10px;
+        }
+
+        .legend-left {
+            top: 100px;
+            left: 10px;
+        }
+
+        .legend i {
+            display: inline-block;
+            width: 20px;
+            height: 10px;
+            margin-right: 5px;
+        }
+
+        /* Colors for each category (consistent with map) */
+        .blue { background: blue; }
+        .yellow { background: yellow; }
+        .green { background: green; }
+        .purple { background: purple; }
+        .cyan { background: cyan; }
+        .orange { background: orange; }
+        .red { background: red; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center; color: blue;">Carte des Circulations de William MacGuckin de Slane</h1>
+    <p style="text-align:center;">Explorez les régions d'Afrique du Nord où de Slane a contribué à l'étude des artefacts et de la linguistique berbères à travers ses recherches et traductions.</p>
+    
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Right-side legend -->
+    <div class="legend">
+        <h4>Légende</h4>
+        <i class="blue"></i> Lieu de recherche et contribution<br>
+        <i class="yellow"></i> Lieu de traduction importante<br>
+        <i class="green"></i> Collaborations de recherches<br>
+        <i class="purple"></i> Découverte archéologique majeure
+    </div>
+
+    <!-- Left-side legend -->
+    <div class="legend-left">
+        <h4>Détails des Circulations</h4>
+        <i class="blue"></i> Analyse historique et archivistique<br>
+        <i class="cyan"></i> Études sociolinguistiques<br>
+        <i class="orange"></i> Collaborations interdisciplinaires<br>
+        <i class="red"></i> Travaux sur les inscriptions libyques
+    </div>
+
+    <!-- Leaflet JS for the map -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([31.7917, -7.0926], 5); // Starting at Morocco/North Africa region
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+        }).addTo(map);
+
+        // Define custom markers and their colors
+        function getColor(circulation) {
+            switch (circulation) {
+                case 'Lieu de recherche': return 'blue'; 
+                case 'Lieu de traduction': return 'yellow';
+                case 'Collaborations de recherches': return 'green'; 
+                case 'Découverte archéologique': return 'purple'; 
+                case 'Analyse historique': return 'cyan'; 
+                case 'Études sociolinguistiques': return 'orange';
+                case 'Travaux inscriptions libyques': return 'red';
+                default: return 'black';
+            }
+        }
+
+        // Create markers with popups
+        function createCustomMarker(lat, lng, circulation, description) {
+            return L.circleMarker([lat, lng], {
+                color: getColor(circulation),
+                radius: 12,
+                fillOpacity: 0.8
+            }).addTo(map).bindPopup(`<b>${circulation}</b><br>${description}`);
+        }
+
+        // Place markers for significant contributions by William MacGuckin de Slane
+        createCustomMarker(36.7529, 3.042, 'Lieu de recherche', 'Alger : Recherche sur les manuscrits algériens et études berbères.'); // Algeria
+        createCustomMarker(35.761, -5.83395, 'Lieu de traduction', 'Tanger : Traduction de l\'Histoire des Berbères d\'Ibn Khaldoun.'); // Tangier, Morocco
+        createCustomMarker(34.020882, -6.841650, 'Collaborations de recherches', 'Rabat : Collaborations avec chercheurs européens pour les études berbères.'); // Rabat, Morocco
+        createCustomMarker(33.9716, -6.8498, 'Découverte archéologique', 'Fès : Découverte d\'artéfacts majeurs liés à l\'histoire berbère.'); // Fez, Morocco
+        createCustomMarker(35.6993, 3.1735, 'Études sociolinguistiques', 'Blida : Études sociolinguistiques sur les dialectes berbères.'); // Blida, Algeria
+        createCustomMarker(36.679, 4.046, 'Travaux inscriptions libyques', 'Tizi Ouzou : Travail sur les inscriptions libyques.'); // Tizi Ouzou, Algeria
+    </script>
+</body>
+</html>
